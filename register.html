@@ -61,6 +61,7 @@ o<!DOCTYPE html>
         <form id="registerForm">
             <input type="text" id="employee_id" placeholder="Employee ID" required>
             <input type="text" id="name" placeholder="Full Name" required>
+            <input type"text" id="age" placeholder="Age" required>
             
             <select id="health_goals" required>
                 <option value="">Select Health Goal</option>
@@ -93,6 +94,7 @@ o<!DOCTYPE html>
         let employeeData = {
             employee_id: document.getElementById("employee_id").value,
             name: document.getElementById("name").value,
+            age: document.getElementById("age").value,
             health_goals: document.getElementById("health_goals").value,
             weather: document.getElementById("weather").value,
             meal_time: document.getElementById("meal_time").value
