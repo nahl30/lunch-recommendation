@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Register Employee</h2>
+        <form id="registerForm">
+            <input type="text" id="employee_id" placeholder="Employee ID" required>
+            <input type="text" id="name" placeholder="Full Name" required>
+            
+            <select id="health_goals" required>
+                <option value="">Select Health Goal</option>
+                <option value="Weight loss">Weight Loss</option>
+                <option value="Weight gain">Weight Gain</option>
+                <option value="Healthy">Healthy</option>
+            </select>
+
+            <select id="weather" required>
+                <option value="">Select Weather</option>
+                <option value="Sunny">Sunny</option>
+                <option value="Rain">Rain</option>
+                <option value="Cloudy">Cloudy</option>
+            </select>
+
+            <select id="meal_time" required>
+                <option value="">Select Meal Time</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+            </select>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let employeeData = {
+                employee_id: document.getElementById("employee_id").value,
+                name: document.getElementById("name").value,
+                health_goals: document.getElementById("health_goals").value,
+                weather: document.getElementById("weather").value,
+                meal_time: document.getElementById("meal_time").value
+            };
+
+            let response = await fetch("http://127.0.0.1:5000/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(employeeData)
+            });
+
+            let result = await response.json();
+            alert(result.message);
+        });
+    </script>
+
+</body>
+</html>
