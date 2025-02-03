@@ -87,17 +87,18 @@ o<!DOCTYPE html>
     </div>
 
     <script>
-        document.getElementById("registerForm").addEventListener("submit", async function(event) {
-            event.preventDefault();
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
 
-            let employeeData = {
-                employee_id: document.getElementById("employee_id").value,
-                name: document.getElementById("name").value,
-                health_goals: document.getElementById("health_goals").value,
-                weather: document.getElementById("weather").value,
-                meal_time: document.getElementById("meal_time").value
-            };
+        let employeeData = {
+            employee_id: document.getElementById("employee_id").value,
+            name: document.getElementById("name").value,
+            health_goals: document.getElementById("health_goals").value,
+            weather: document.getElementById("weather").value,
+            meal_time: document.getElementById("meal_time").value
+        };
 
+        try {
             let response = await fetch("http://127.0.0.1:5000/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -105,9 +106,18 @@ o<!DOCTYPE html>
             });
 
             let result = await response.json();
-            alert(result.message);
-        });
-    </script>
+
+            if (response.ok) {
+                alert(result.message);
+                document.getElementById("registerForm").reset(); // Reset form jika berhasil
+            } else {
+                alert("Error: " + result.error); // Menampilkan pesan error jika gagal
+            }
+        } catch (error) {
+            alert("Gagal menghubungi server. Pastikan backend berjalan!");
+        }
+    });
+</script>
 
 </body>
 </html>
