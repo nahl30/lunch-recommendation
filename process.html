@@ -66,18 +66,29 @@
         let employee_id = urlParams.get("employee_id");
 
         if (!employee_id) {
+            employee_id = document.getElementById("employee_id").value;
+        } else {
+            document.getElementById("employee_id").value = employee_id; // Auto-fill input
+        }
+
+        if (!employee_id) {
             alert("Employee ID tidak ditemukan!");
             return;
         }
 
-        let response = await fetch(`http://127.0.0.1:5000/recommend/${employee_id}`);
+        let response = await fetch(`http://127.0.0.1:5001/recommend/${employee_id}`);
         let data = await response.json();
         document.getElementById("result").innerText = data.message;
     }
 
-    // Jalankan otomatis saat halaman dimuat
-    window.onload = getRecommendation;
-</script>
+    // Jalankan otomatis saat halaman dimuat jika employee_id ada di URL
+    window.onload = function() {
+        let urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("employee_id")) {
+            getRecommendation();
+        }
+    };
+    </script>
 
 </body>
 </html>
