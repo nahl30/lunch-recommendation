@@ -68,7 +68,7 @@
                 return;
             }
 
-            let response = await fetch(`http://127.0.0.1:5001/recommend/${employee_id}`);
+            let response = await fetch(`http://127.0.0.1:5000/recommend/${employee_id}`);
             let data = await response.json();
             document.getElementById("result").innerText = data.message;
         }
