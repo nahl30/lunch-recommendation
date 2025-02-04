@@ -61,18 +61,23 @@
     </div>
 
     <script>
-        async function getRecommendation() {
-            let employee_id = document.getElementById("employee_id").value;
-            if (!employee_id) {
-                alert("Please enter Employee ID");
-                return;
-            }
+    async function getRecommendation() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let employee_id = urlParams.get("employee_id");
 
-            let response = await fetch(`http://127.0.0.1:5001/recommend/${employee_id}`);
-            let data = await response.json();
-            document.getElementById("result").innerText = data.message;
+        if (!employee_id) {
+            alert("Employee ID tidak ditemukan!");
+            return;
         }
-    </script>
+
+        let response = await fetch(`http://127.0.0.1:5001/recommend/${employee_id}`);
+        let data = await response.json();
+        document.getElementById("result").innerText = data.message;
+    }
+
+    // Jalankan otomatis saat halaman dimuat
+    window.onload = getRecommendation;
+</script>
 
 </body>
 </html>
