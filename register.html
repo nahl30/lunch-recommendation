@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Employee</title>
+    <title>Registration</title>
    <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,7 +39,7 @@
             border-radius: 5px;
             box-sizing: border-box;
             display: block;
-            text-align: center; /* Menyelaraskan teks di dalam input/select */
+            text-align: left; /* Menyelaraskan teks di dalam input/select */
         }
         button {
             background-color: #2dc3d3;
@@ -63,7 +63,7 @@
 <body>
 
     <div class="container">
-        <h2>Register Employee</h2>
+        <h2>Employee Registration</h2>
 
         <input type="text" id="name" placeholder="Enter Name" required>
         <input type="text" id="age" placeholder="Enter Age" required>
@@ -103,7 +103,7 @@
         let weather = document.getElementById("weather").value;
 
         if (!name || !age || !health_goals || !meal_time || !weather) {
-            alert("Semua field harus diisi!");
+            alert("Please make sure to complete all fields");
             return;
         }
 
@@ -131,7 +131,7 @@
                 document.getElementById("message").innerText = data.error || "Registrasi gagal!";
             }
         } catch (error) {
-            document.getElementById("message").innerText = "Gagal menghubungi server. Pastikan backend berjalan!";
+            document.getElementById("message").innerText = "We're experiencing technical difficulties. Please try again in a few moments!";
         }
     }
 </script>
