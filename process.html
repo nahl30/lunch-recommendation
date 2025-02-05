@@ -25,7 +25,7 @@
         h2 {
             margin-bottom: 20px;
         }
-        input {
+        input, select {
             width: 80%;
             padding: 10px;
             margin: 10px 0;
@@ -40,11 +40,12 @@
             width: 80%;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #01e6fc;
         }
-        .result {
+        .result, .update-message {
             margin-top: 20px;
             font-weight: bold;
             color: #333;
@@ -55,39 +56,83 @@
 
     <div class="container">
         <h2>Food Recommendation</h2>
-        <input type="text" id="employee_id" placeholder="Enter Employee ID">
+
+        <!-- Input Employee ID -->
+        <input type="text" id="employee_id" placeholder="Enter Employee ID" readonly>
         <button onclick="getRecommendation()">Get Recommendation</button>
         <p class="result" id="result"></p>
+
+        <!-- Form Update Meal Time & Weather -->
+        <h3>Update Meal Time & Weather</h3>
+        <label for="meal_time">Meal Time:</label>
+        <select id="meal_time">
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snack">Snack</option>
+        </select>
+
+        <label for="weather">Weather:</label>
+        <select id="weather">
+            <option value="Sunny">Sunny</option>
+            <option value="Rain">Rain</option>
+            <option value="Cloudy">Cloudy</option>
+        </select>
+
+        <button onclick="updateEmployee()">Update</button>
+        <p class="update-message" id="update_message"></p>
     </div>
 
     <script>
-    async function getRecommendation() {
-        let urlParams = new URLSearchParams(window.location.search);
-        let employee_id = urlParams.get("employee_id");
-
-        if (!employee_id) {
-            employee_id = document.getElementById("employee_id").value;
-        } else {
-            document.getElementById("employee_id").value = employee_id; // Auto-fill input
+        // Ambil Employee ID dari URL
+        function getEmployeeIDFromURL() {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get("employee_id");
         }
 
-        if (!employee_id) {
-            alert("Employee ID tidak ditemukan!");
-            return;
+        // Ambil rekomendasi makanan
+        async function getRecommendation() {
+            let employee_id = getEmployeeIDFromURL();
+            if (!employee_id) {
+                alert("Employee ID tidak ditemukan!");
+                return;
+            }
+
+            document.getElementById("employee_id").value = employee_id; // Tampilkan ID di input
+
+            let response = await fetch(`http://127.0.0.1:5001/recommend/${employee_id}`);
+            let data = await response.json();
+            document.getElementById("result").innerText = data.message;
         }
 
-        let response = await fetch(`http://127.0.0.1:5001/recommend/${employee_id}`);
-        let data = await response.json();
-        document.getElementById("result").innerText = data.message;
-    }
+        // Update data employee (Meal Time & Weather)
+        async function updateEmployee() {
+            let employee_id = getEmployeeIDFromURL();
+            if (!employee_id) {
+                alert("Employee ID tidak ditemukan!");
+                return;
+            }
 
-    // Jalankan otomatis saat halaman dimuat jika employee_id ada di URL
-    window.onload = function() {
-        let urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has("employee_id")) {
+            let meal_time = document.getElementById("meal_time").value;
+            let weather = document.getElementById("weather").value;
+
+            let response = await fetch("http://127.0.0.1:5001/update_employee", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ employee_id, meal_time, weather })
+            });
+
+            let data = await response.json();
+            document.getElementById("update_message").innerText = data.message;
+
+            // Setelah update, panggil ulang rekomendasi
             getRecommendation();
         }
-    };
+
+        // Jalankan otomatis saat halaman dimuat
+        window.onload = function() {
+            getRecommendation();
+        };
     </script>
 
 </body>
