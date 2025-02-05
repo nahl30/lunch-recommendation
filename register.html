@@ -1,13 +1,13 @@
-o<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Register Employee</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #FFFFFF;
+            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,25 +16,17 @@ o<!DOCTYPE html>
         }
         .container {
             background: white;
-            color: #2dc3d3;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 35%;
+            width: 40%;
             text-align: center;
         }
         h2 {
             margin-bottom: 20px;
         }
-        input{
-            width: 50%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        select{
-            width: 50%;
+        input, select {
+            width: 80%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
@@ -45,81 +37,86 @@ o<!DOCTYPE html>
             color: white;
             border: none;
             padding: 10px;
-            width: 50%;
+            width: 80%;
             border-radius: 5px;
             cursor: pointer;
         }
         button:hover {
             background-color: #01e6fc;
         }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Register</h2>
-        <form id="registerForm">
-            <input type="text" id="employee_id" placeholder="Employee ID" required>
-            <input type="text" id="name" placeholder="Full Name" required>
-            <input type"text" id="age" placeholder="Age" required>
-            
-            <select id="health_goals" required>
-                <option value="">Select Health Goal</option>
-                <option value="Weight loss">Weight Loss</option>
-                <option value="Weight gain">Weight Gain</option>
-                <option value="Healthy">Healthy</option>
-            </select>
+        <h2>Register Employee</h2>
 
-            <select id="weather" required>
-                <option value="">Select Weather</option>
-                <option value="Sunny">Sunny</option>
-                <option value="Rain">Rain</option>
-            </select>
+        <input type="text" id="name" placeholder="Enter Name" required>
+        <input type="text" id="age" placeholder="Enter Age" required>
 
-            <select id="meal_time" required>
-                <option value="">Select Meal Time</option>
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-            </select>
+        <select id="health_goals" required>
+            <option value="">Select Health Goal</option>
+            <option value="Weight loss">Weight Loss</option>
+            <option value="Weight gain">Weight Gain</option>
+            <option value="Healthy">Healthy</option>
+        </select>
 
-            <button type="submit">Save</button>
-        </form>
+        <select id="meal_time" required>
+            <option value="">Select Meal Time</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snack">Snack</option>
+        </select>
+
+        <select id="weather" required>
+            <option value="">Select Weather</option>
+            <option value="Sunny">Sunny</option>
+            <option value="Rain">Rain</option>
+            <option value="Cloudy">Cloudy</option>
+        </select>
+
+        <button onclick="registerEmployee()">Register</button>
+        <p class="message" id="message"></p>
     </div>
 
     <script>
-    document.getElementById("registerForm").addEventListener("submit", async function(event) {
-        event.preventDefault();
+        async function registerEmployee() {
+            let name = document.getElementById("name").value;
+            let age = document.getElementById("age").value;
+            let health_goals = document.getElementById("health_goals").value;
+            let meal_time = document.getElementById("meal_time").value;
+            let weather = document.getElementById("weather").value;
 
-        let employeeData = {
-            employee_id: document.getElementById("employee_id").value,
-            name: document.getElementById("name").value,
-            age: document.getElementById("age").value,
-            health_goals: document.getElementById("health_goals").value,
-            weather: document.getElementById("weather").value,
-            meal_time: document.getElementById("meal_time").value
-        };
-
-        try {
-            let response = await fetch("http://127.0.0.1:5000/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(employeeData)
-            });
-
-            let result = await response.json();
-
-            if (response.ok) {
-                alert(result.message);
-                document.getElementById("registerForm").reset(); // Reset form jika berhasil
-            } else {
-                alert("Error: " + result.error); // Menampilkan pesan error jika gagal
+            if (!name || !age || !health_goals || !meal_time || !weather) {
+                alert("Semua field harus diisi!");
+                return;
             }
-        } catch (error) {
-            alert("Gagal menghubungi server. Pastikan backend berjalan!");
+
+            try {
+                let response = await fetch("http://127.0.0.1:5000/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, age, health_goals, meal_time, weather })
+                });
+
+                let data = await response.json();
+
+                if (response.ok && data.redirect_url) {
+                    window.location.href = data.redirect_url; // Redirect ke process.html dengan employee_id
+                } else {
+                    document.getElementById("message").innerText = data.error || "Registrasi gagal!";
+                }
+            } catch (error) {
+                document.getElementById("message").innerText = "Gagal menghubungi server. Pastikan backend berjalan!";
+            }
         }
-    });
-</script>
+    </script>
 
 </body>
 </html>
