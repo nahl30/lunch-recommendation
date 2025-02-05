@@ -54,7 +54,7 @@
         .result,  {
             margin-top: 20px;
             font-weight: bold;
-            color: #323;
+            color: #ffff;
         }
         .update-message {
             margin-top: 20px;
@@ -62,7 +62,7 @@
             color: #333;
         }
         .nutrition-info {
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 1.1em;
             color: #555;
         }
@@ -144,9 +144,9 @@ async function getEmployeeInfo(employee_id) {
             document.getElementById("result").innerText = data.message;
             
             // Menampilkan informasi kalori, protein, dan fat
-            document.getElementById("calories").innerText = `Calories: ${data.calorie}`;
-            document.getElementById("protein").innerText = `Protein: ${data.protein}`;
-            document.getElementById("fat").innerText = `Fat: ${data.fat}`;
+            document.getElementById("calories").innerText = `Calories: ${data.calorie} ccal`;
+            document.getElementById("protein").innerText = `Protein: ${data.protein} gram`;
+            document.getElementById("fat").innerText = `Fat: ${data.fat} gram`;
         }
 
         // Update data employee (Meal Time & Weather)
