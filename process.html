@@ -118,7 +118,7 @@ async function getEmployeeInfo(employee_id) {
     let response = await fetch(`http://127.0.0.1:5001/get_employee_info/${employee_id}`);
     let data = await response.json();
     if (data && data.employee_id && data.employee_name) {
-        document.getElementById("employee_info").innerText = `Employee ID: ${data.employee_id}<br>Name: ${data.employee_name}`;
+        document.getElementById("employee_info").innerHTML = `Employee ID: ${data.employee_id}<br>Name: ${data.employee_name}`;
     } else {
         document.getElementById("employee_info").innerText = "Employee data not found!";
     }
