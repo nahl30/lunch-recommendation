@@ -108,7 +108,16 @@
             let data = await response.json();
 
             if (response.ok && data.redirect_url) {
-                window.location.href = data.redirect_url; // Redirect ke process.html dengan employee_id
+                // Menambahkan domain penuh jika hanya URL relatif yang diterima
+                const domain = "https://lunch-recommendation-blond.vercel.app";
+                let redirectUrl = data.redirect_url;
+
+                // Jika redirect_url bersifat relatif (misalnya hanya "/process.html?employee_id=12345")
+                if (!redirectUrl.startsWith("http")) {
+                    redirectUrl = domain + redirectUrl;
+                }
+
+                window.location.href = redirectUrl; // Redirect ke process.html dengan employee_id
             } else {
                 document.getElementById("message").innerText = data.error || "Registrasi gagal!";
             }
@@ -117,6 +126,7 @@
         }
     }
 </script>
+
 
 
 </body>
