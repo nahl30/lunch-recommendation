@@ -28,14 +28,16 @@
         h2 {
             margin-bottom: 20px;
         }
-     input, select {
-            width: 50%;  /* Menyamaratakan lebar input dan select */
-            padding: 10px;
+         input, select {
+            width: 80%;  /* Ubah sesuai kebutuhan */
+            padding: 12px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
-        }
+            box-sizing: border-box; /* Memastikan padding tidak mempengaruhi ukuran total */
+            display: block; /* Pastikan setiap elemen tampil sebagai blok */
+            }
+
         button {
             background-color: #2dc3d3;
             color: white;
