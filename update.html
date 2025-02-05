@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Employee Data</title>
+</head>
+<body>
+    <h2>Update Meal Time & Weather</h2>
+    <label for="meal_time">Meal Time:</label>
+    <select id="meal_time">
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Dinner">Dinner</option>
+        <option value="Snack">Snack</option>
+    </select>
+
+    <label for="weather">Weather:</label>
+    <select id="weather">
+        <option value="Sunny">Sunny</option>
+        <option value="Rain">Rain</option>
+        <option value="Cloudy">Cloudy</option>
+    </select>
+
+    <button onclick="updateEmployee()">Update</button>
+    <p id="message"></p>
+
+    <script>
+        async function updateEmployee() {
+            let meal_time = document.getElementById("meal_time").value;
+            let weather = document.getElementById("weather").value;
+            let employee_id = "123"; // Sesuaikan dengan ID user
+
+            let response = await fetch("http://127.0.0.1:5001/update_employee", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ employee_id, meal_time, weather })
+            });
+
+            let data = await response.json();
+            document.getElementById("message").innerText = data.message;
+        }
+    </script>
+</body>
+</html>
