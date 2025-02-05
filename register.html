@@ -85,38 +85,39 @@
         <p class="message" id="message"></p>
     </div>
 
-    <script>
-        async function registerEmployee() {
-            let name = document.getElementById("name").value;
-            let age = document.getElementById("age").value;
-            let health_goals = document.getElementById("health_goals").value;
-            let meal_time = document.getElementById("meal_time").value;
-            let weather = document.getElementById("weather").value;
+  <script>
+    async function registerEmployee() {
+        let name = document.getElementById("name").value;
+        let age = document.getElementById("age").value;
+        let health_goals = document.getElementById("health_goals").value;
+        let meal_time = document.getElementById("meal_time").value;
+        let weather = document.getElementById("weather").value;
 
-            if (!name || !age || !health_goals || !meal_time || !weather) {
-                alert("Semua field harus diisi!");
-                return;
-            }
-
-            try {
-                let response = await fetch("http://127.0.0.1:5000/register", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, age, health_goals, meal_time, weather })
-                });
-
-                let data = await response.json();
-
-                if (response.ok && data.redirect_url) {
-                    window.location.href = data.redirect_url; // Redirect ke process.html dengan employee_id
-                } else {
-                    document.getElementById("message").innerText = data.error || "Registrasi gagal!";
-                }
-            } catch (error) {
-                document.getElementById("message").innerText = "Gagal menghubungi server. Pastikan backend berjalan!";
-            }
+        if (!name || !age || !health_goals || !meal_time || !weather) {
+            alert("Semua field harus diisi!");
+            return;
         }
-    </script>
+
+        try {
+            let response = await fetch("http://127.0.0.1:5000/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, age, health_goals, meal_time, weather })
+            });
+
+            let data = await response.json();
+
+            if (response.ok && data.redirect_url) {
+                window.location.href = data.redirect_url; // Redirect ke process.html dengan employee_id
+            } else {
+                document.getElementById("message").innerText = data.error || "Registrasi gagal!";
+            }
+        } catch (error) {
+            document.getElementById("message").innerText = "Gagal menghubungi server. Pastikan backend berjalan!";
+        }
+    }
+</script>
+
 
 </body>
 </html>
