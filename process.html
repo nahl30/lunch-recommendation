@@ -97,15 +97,24 @@
 
     <script>
         // Ambil Employee ID dari URL dan isi otomatis ke input
-        function getEmployeeIDFromURL() {
-            let urlParams = new URLSearchParams(window.location.search);
-            let employee_id = urlParams.get("employee_id");
-            if (employee_id) {
-                document.getElementById("employee_id").value = employee_id;
-            }
-            return employee_id;
-        }
+function getEmployeeIDFromURL() {
+    let urlParams = new URLSearchParams(window.location.search);
+    let employee_id = urlParams.get("employee_id");
+    if (employee_id) {
+        // Panggil API untuk mendapatkan informasi nama employee
+        getEmployeeInfo(employee_id);
+    }
+    return employee_id;
+}
 
+// Ambil informasi Employee (ID dan Nama)
+async function getEmployeeInfo(employee_id) {
+    let response = await fetch(`http://127.0.0.1:5001/get_employee_info/${employee_id}`);
+    let data = await response.json();
+    if (data) {
+        document.getElementById("employee_info").innerText = `Employee ID: ${data.employee_id}, Name: ${data.employee_name}`;
+    }
+}
         // Ambil rekomendasi makanan
         async function getRecommendation() {
             let employee_id = getEmployeeIDFromURL();
