@@ -63,7 +63,7 @@
         <h2>Food Recommendation</h2>
 
         <!-- Input Employee ID (Readonly) -->
-        <input type="text" id="employee_id" placeholder="Employee ID" readonly>
+        <p id="employee_info"></p>
         <button onclick="getRecommendation()">Get Recommendation</button>
         <p class="result" id="result"></p>
 
@@ -111,10 +111,13 @@ function getEmployeeIDFromURL() {
 async function getEmployeeInfo(employee_id) {
     let response = await fetch(`http://127.0.0.1:5001/get_employee_info/${employee_id}`);
     let data = await response.json();
-    if (data) {
+    if (data && data.employee_id && data.employee_name) {
         document.getElementById("employee_info").innerText = `Employee ID: ${data.employee_id}, Name: ${data.employee_name}`;
+    } else {
+        document.getElementById("employee_info").innerText = "Employee data not found!";
     }
 }
+
         // Ambil rekomendasi makanan
         async function getRecommendation() {
             let employee_id = getEmployeeIDFromURL();
